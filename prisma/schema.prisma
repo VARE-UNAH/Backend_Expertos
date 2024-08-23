@@ -142,10 +142,46 @@ model Day {
   id           Int            @id @default(autoincrement())
   name         String         @db.VarChar(10)
   TrainingDays Training_Day[]
+  FoodDays      Food_Day[]
 }
 
 model Food_Plan {
   id       Int    @id @default(autoincrement())
   ClientId Int    @unique
   Client   Client @relation(fields: [ClientId], references: [id], onDelete: Cascade)
+  Food_Day Food_Day[]
 }
+
+model Food_Day {
+  id            Int        @id @default(autoincrement())
+  Food_Plan     Food_Plan  @relation(fields: [Food_PlanId], references: [id])
+  Food_PlanId   Int
+  Day           Day        @relation(fields: [dayId], references: [id])
+  name          String?    @db.VarChar(50)
+  dayId         Int
+  foodTimes     Food_Time[] // A day has multiple food times
+}
+
+model Food_Time {
+  id             Int           @id @default(autoincrement())
+  FoodDay        Food_Day      @relation(fields: [foodDayId], references: [id])
+  foodDayId      Int
+  FoodTimeType   FoodTimeType  @relation(fields: [foodTimeTypeId], references: [id])
+  foodTimeTypeId Int
+  foodItems      Food[]        @relation("FoodTimeFood")
+}
+
+model FoodTimeType {
+  id             Int           @id @default(autoincrement())
+  typeName       String        @db.VarChar(40)
+  foodTimes      Food_Time[]   // A type has multiple food times
+}
+
+model Food {
+  id              Int                     @id @default(autoincrement())
+  name            String                  @db.VarChar(40)
+  calories        Int
+  foodTimes       Food_Time[]             @relation("FoodTimeFood")
+}
+
+

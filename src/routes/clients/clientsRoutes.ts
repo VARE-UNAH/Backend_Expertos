@@ -11,4 +11,5 @@ const router = express.Router();
 router.get('/', authenticate, getAllClientsController);
 router.post('/', authenticate, createClientValidators, checkClientExists, checkPlanExists, createClientController);
 
+
 export default router;

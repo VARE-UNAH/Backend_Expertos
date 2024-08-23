@@ -1,6 +1,7 @@
 // controllers/clientController.ts
 import { Request, Response } from 'express';
 import { getAllClients, CreateClient } from '../../services/clients/clientsService'; // Asegúrate de ajustar el path a tu configuración
+import { actualizarPlan, createPlan, getClientsPlan, getPlanById } from '../../services/plans/planService';
 
 export const getAllClientsController = async (req: Request, res: Response) => {
     try {
@@ -82,5 +83,6 @@ export const createClientController = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
+
 
 
