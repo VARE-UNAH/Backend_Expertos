@@ -1,0 +1,27 @@
+#!/bin/bash# Construir la imagen para Fitmentor en la plataforma linux/amd64
+docker buildx build --platform linux/amd64 -t fm-api-dev:latest . --load
+
+# Ejecutar el contenedor localmente (opcional)
+docker run -d -p 8000:8000 --name my-fastapi-container --env-file .env fm-api-dev:latest
+
+# Iniciar sesión en Azure
+az login
+
+# Iniciar sesión en el Azure Container Registry (ACR)
+az acr login --name acrfmdev
+
+# Etiquetar la imagen para el ACR con la etiqueta 'latest'
+docker tag fm-api-dev:latest acrfmdev.azurecr.io/fm-api-dev:latest
+
+# Etiquetar la imagen para el ACR con una versión específica (en este caso 0.1.18)
+docker tag fm-api-dev:latest acrfmdev.azurecr.io/fm-api-dev:0.1.22
+
+# Publicar la imagen etiquetada como 'latest' en el ACR
+docker push acrfmdev.azurecr.io/fm-api-dev:latest
+
+# Publicar la imagen etiquetada como versión '0.1.18' en el ACR
+docker push acrfmdev.azurecr.io/fm-api-dev:0.1.22
+
+
+
+
