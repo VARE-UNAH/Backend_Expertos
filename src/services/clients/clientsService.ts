@@ -1,7 +1,7 @@
 // src/services/firebaseService.js
 
 import { prisma } from "../../config/db";
-
+//prueba
 export const getAllClients = async (userId: number, page: number = 1, pageSize: number = 10) => {
 
     const skip = (page - 1) * pageSize; // Omite los elementos anteriores a la página actual
